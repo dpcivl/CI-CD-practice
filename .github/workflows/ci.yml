@@ -40,5 +40,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install Cppcheck
+        uses: sudo apt-get install -y cppcheck
+
       - name: Run Cppcheck
         run: cppcheck . --enable=all --error-exitcode=1
