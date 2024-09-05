@@ -31,6 +31,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # MyTest가 제대로 생성되었는지 확인
+      - name: Verify MyTest exists
+        run: ls build/MyTest  
+
       - name: Run tests
         run: ./build/MyTest
 
