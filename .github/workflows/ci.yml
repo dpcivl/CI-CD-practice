@@ -32,3 +32,6 @@ jobs:
       # 빌드 후 테스트 실행
       - name: Run Tests
         run: ./build/MyCppProject
+
+      - name: Run Tests
+        run: ./build/MyTest
