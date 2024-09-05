@@ -16,7 +16,7 @@ jobs:
     steps:
       # 저장소 체크아웃
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # C++ 빌드 도구 설치
       - name: Install dependencies
