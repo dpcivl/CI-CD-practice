@@ -1,0 +1,69 @@
+name: Complex C++ CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: sudo apt-get install -y cmake g++ make
+
+      - name: Configure with CMake
+        run: cmake -S . -B build
+
+      - name: Build with Make
+        run: cmake --build build
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: build/
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: build
+
+      - name: Run MyTest
+        run: ./build/MyTest
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Cppcheck
+        run: sudo apt-get install -y cppcheck
+
+      - name: Run Cppcheck
+        run: cppcheck . --enable=all --error-exitcode=1
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [build, test, lint]  # 배포는 빌드, 테스트, 린트가 성공한 후 실행
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to server
+        run: echo "Deploying to production server..." 
+        # 실제 배포 스크립트 또는 명령어를 여기에 추가
